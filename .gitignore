@@ -1,1 +1,12 @@
-dist/*
+# Build artifacts
+dist/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific files
+.DS_Store
+Thumbs.db
