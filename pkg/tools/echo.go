@@ -29,7 +29,7 @@ func NewEchoTool() mcp.Tool {
 func HandleEchoTool(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	message, ok := request.Params.Arguments["message"].(string)
 	if !ok || message == "" {
-		return mcp.NewToolResultText("Error: message parameter is required"), nil
+		return nil, fmt.Errorf("missing or empty message parameter")
 	}
 
 	var url string = "localhost:7379"
@@ -43,13 +43,18 @@ func HandleEchoTool(ctx context.Context, request mcp.CallToolRequest) (*mcp.Call
 
 	client, err := dicedb.NewClient(host, port)
 	if err != nil {
-		return mcp.NewToolResultText(fmt.Sprintf("Error connecting to DiceDB: %v", err)), nil
+		return nil, fmt.Errorf("error connecting to DiceDB: %w", err)
 	}
 
 	resp := client.Fire(&wire.Command{
 		Cmd:  "ECHO",
 		Args: []string{message},
 	})
+
+	// Check if DiceDB returned an error
+	if resp.Err != "" {
+		return nil, fmt.Errorf("DiceDB error: %s", resp.Err)
+	}
 
 	return mcp.NewToolResultText(fmt.Sprintf("DiceDB echoed: %s", utils.FormatDiceDBResponse(resp))), nil
 }

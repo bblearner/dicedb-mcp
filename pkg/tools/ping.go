@@ -37,11 +37,16 @@ func HandlePingTool(ctx context.Context, request mcp.CallToolRequest) (*mcp.Call
 	// Create a new DiceDB client
 	client, err := dicedb.NewClient(host, port)
 	if err != nil {
-		return mcp.NewToolResultText(fmt.Sprintf("Error connecting to DiceDB: %v", err)), nil
+		return nil, fmt.Errorf("error connecting to DiceDB: %w", err)
 	}
 
 	// Run the PING command on the DiceDB server
 	resp := client.Fire(&wire.Command{Cmd: "PING"})
+
+	// Check if DiceDB returned an error
+	if resp.Err != "" {
+		return nil, fmt.Errorf("DiceDB error: %s", resp.Err)
+	}
 
 	// Return the response to the MCP client
 	return mcp.NewToolResultText(fmt.Sprintf("Response from DiceDB: %s", utils.FormatDiceDBResponse(resp))), nil

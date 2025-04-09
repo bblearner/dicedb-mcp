@@ -29,7 +29,7 @@ func NewGetTool() mcp.Tool {
 func HandleGetTool(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	key, ok := request.Params.Arguments["key"].(string)
 	if !ok || key == "" {
-		return mcp.NewToolResultText("Error: key parameter is required"), nil
+		return nil, fmt.Errorf("missing or empty key parameter")
 	}
 
 	var url string = "localhost:7379"
@@ -43,13 +43,18 @@ func HandleGetTool(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallT
 
 	client, err := dicedb.NewClient(host, port)
 	if err != nil {
-		return mcp.NewToolResultText(fmt.Sprintf("Error connecting to DiceDB: %v", err)), nil
+		return nil, fmt.Errorf("error connecting to DiceDB: %w", err)
 	}
 
 	resp := client.Fire(&wire.Command{
 		Cmd:  "GET",
 		Args: []string{key},
 	})
+
+	// Check if DiceDB returned an error
+	if resp.Err != "" {
+		return nil, fmt.Errorf("DiceDB error: %s", resp.Err)
+	}
 
 	value := utils.FormatDiceDBResponse(resp)
 
