@@ -24,6 +24,12 @@ Prerequisites:
 go install github.com/pottekkat/dicedb-mcp@latest
 ```
 
+Get the path to the `dicedb-mcp` binary:
+
+```bash
+which dicedb-mcp
+```
+
 ## Usage
 
 ### With MCP Hosts/Clients
@@ -34,7 +40,7 @@ Add this to your `claude_desktop_config.json` for Claude Desktop or `mcp.json` f
 {
     "mcpServers": {
         "dicedb-mcp": {
-            "command": "/Users/pottekkat/Git/dicedb-mcp/dist/dicedb-mcp"
+            "command": "path/to/dicedb-mcp"
         }
     }
 }
