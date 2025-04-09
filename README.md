@@ -9,6 +9,7 @@ This implementation uses the [DiceDB Go SDK](https://github.com/DiceDB/dicedb-go
 - PING DiceDB to check connectivity.
 - ECHO a message through DiceDB.
 - GET a value from DiceDB by key.
+- SET a key-value pair in DiceDB.
 
 ## Installation
 
@@ -49,6 +50,10 @@ Echoes a message through the DiceDB server.
 ### get
 
 Retrieves a value from DiceDB by key.
+
+### set
+
+Sets a key-value pair in DiceDB.
 
 ## Development
 

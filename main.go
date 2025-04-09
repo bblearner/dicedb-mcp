@@ -27,6 +27,10 @@ func main() {
 	getTool := tools.NewGetTool()
 	s.AddTool(getTool, tools.HandleGetTool)
 
+	// Create and add the set tool
+	setTool := tools.NewSetTool()
+	s.AddTool(setTool, tools.HandleSetTool)
+
 	// Start the server
 	if err := server.ServeStdio(s); err != nil {
 		fmt.Printf("Error starting server: %v\n", err)
