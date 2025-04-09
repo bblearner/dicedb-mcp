@@ -6,8 +6,9 @@ This implementation uses the [DiceDB Go SDK](https://github.com/DiceDB/dicedb-go
 
 ## Features
 
-- PING a DiceDB server to check connectivity.
-- ECHO a message through a DiceDB server.
+- PING DiceDB to check connectivity.
+- ECHO a message through DiceDB.
+- GET a value from DiceDB by key.
 
 ## Installation
 
@@ -44,6 +45,10 @@ Pings a DiceDB server to check connectivity.
 ### echo
 
 Echoes a message through the DiceDB server.
+
+### get
+
+Retrieves a value from DiceDB by key.
 
 ## Development
 

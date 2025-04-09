@@ -23,6 +23,10 @@ func main() {
 	echoTool := tools.NewEchoTool()
 	s.AddTool(echoTool, tools.HandleEchoTool)
 
+	// Create and add the get tool
+	getTool := tools.NewGetTool()
+	s.AddTool(getTool, tools.HandleGetTool)
+
 	// Start the server
 	if err := server.ServeStdio(s); err != nil {
 		fmt.Printf("Error starting server: %v\n", err)
