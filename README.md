@@ -4,6 +4,8 @@ A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server impleme
 
 This implementation uses the [DiceDB Go SDK](https://github.com/DiceDB/dicedb-go) to communicate with DiceDB.
 
+Check out the [demo video](./demo.mov) to see it in action!
+
 ## Features
 
 - PING DiceDB to check connectivity.
