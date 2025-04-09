@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/dicedb/dicedb-go/wire"
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 // ParseHostAndPort splits a URL string in format "host:port" and returns the host and port
@@ -39,20 +40,61 @@ func FormatDiceDBResponse(resp *wire.Response) string {
 		return fmt.Sprintf("Error: %s", resp.Err)
 	}
 
-	// Handle different value types
-	// TODO: Handle more cases like: https://github.com/DiceDB/dicedb-cli/blob/1c61ed7ec2a24f1483a59965df73450d575bbab6/ironhawk/main.go#L136
+	var result strings.Builder
+
+	// Copied from: https://github.com/DiceDB/dicedb-cli/blob/1c61ed7ec2a24f1483a59965df73450d575bbab6/ironhawk/main.go#L136
+	// Handle attributes if present
+	if len(resp.Attrs.AsMap()) > 0 {
+		attrs := []string{}
+		for k, v := range resp.Attrs.AsMap() {
+			attrs = append(attrs, fmt.Sprintf("%s=%s", k, v))
+		}
+		result.WriteString(fmt.Sprintf("[%s] ", strings.Join(attrs, ", ")))
+	}
+
+	// Handle string-string map if present
+	if len(resp.VSsMap) > 0 {
+		if result.Len() > 0 {
+			result.WriteString("\n")
+		}
+		for k, v := range resp.VSsMap {
+			result.WriteString(fmt.Sprintf("%s=%s\n", k, v))
+		}
+	}
+
+	// Handle the primary value based on its type
 	switch resp.Value.(type) {
 	case *wire.Response_VStr:
-		return resp.GetVStr()
+		result.WriteString(resp.GetVStr())
 	case *wire.Response_VInt:
-		return fmt.Sprintf("%d", resp.GetVInt())
+		result.WriteString(fmt.Sprintf("%d", resp.GetVInt()))
 	case *wire.Response_VFloat:
-		return fmt.Sprintf("%f", resp.GetVFloat())
+		result.WriteString(fmt.Sprintf("%f", resp.GetVFloat()))
 	case *wire.Response_VBytes:
-		return fmt.Sprintf("%s", resp.GetVBytes())
+		result.WriteString(fmt.Sprintf("%s", resp.GetVBytes()))
 	case *wire.Response_VNil:
-		return "(nil)"
-	default:
-		return fmt.Sprintf("%v", resp)
+		result.WriteString("(nil)")
 	}
+
+	// Handle list values if present
+	if len(resp.GetVList()) > 0 {
+		if result.Len() > 0 {
+			result.WriteString("\n")
+		}
+
+		for i, v := range resp.GetVList() {
+			switch v.GetKind().(type) {
+			case *structpb.Value_NullValue:
+				result.WriteString(fmt.Sprintf("%d) (nil)\n", i+1))
+			case *structpb.Value_NumberValue:
+				result.WriteString(fmt.Sprintf("%d) %f\n", i+1, v.GetNumberValue()))
+			case *structpb.Value_StringValue:
+				result.WriteString(fmt.Sprintf("%d) \"%s\"\n", i+1, v.GetStringValue()))
+			case *structpb.Value_BoolValue:
+				result.WriteString(fmt.Sprintf("%d) %t\n", i+1, v.GetBoolValue()))
+			}
+		}
+	}
+
+	return strings.TrimSpace(result.String())
 }
