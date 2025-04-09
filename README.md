@@ -12,6 +12,7 @@ Check out the [demo video](./demo.mov) to see it in action!
 - ECHO a message through DiceDB.
 - GET a value from DiceDB by key.
 - SET a key-value pair in DiceDB.
+- DEL one or more keys from DiceDB.
 
 ## Installation
 
@@ -56,6 +57,10 @@ Retrieves a value from DiceDB by key.
 ### set
 
 Sets a key-value pair in DiceDB.
+
+### del
+
+Deletes one or more keys from DiceDB.
 
 ## Development
 

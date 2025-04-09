@@ -31,6 +31,10 @@ func main() {
 	setTool := tools.NewSetTool()
 	s.AddTool(setTool, tools.HandleSetTool)
 
+	// Create and add the del tool
+	delTool := tools.NewDelTool()
+	s.AddTool(delTool, tools.HandleDelTool)
+
 	// Start the server
 	if err := server.ServeStdio(s); err != nil {
 		fmt.Printf("Error starting server: %v\n", err)
