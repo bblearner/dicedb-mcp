@@ -47,6 +47,49 @@ Add this to your `claude_desktop_config.json` for Claude Desktop or `mcp.json` f
 }
 ```
 
+### With OpenAI Agents SDK
+
+The example below shows how to use the `dicedb-mcp` server with the [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/):
+
+```python
+from agents import Agent, Runner, trace
+from agents.mcp import MCPServer, MCPServerStdio
+from dotenv import load_dotenv
+import os
+import openai
+import asyncio
+
+load_dotenv()
+
+
+async def run(mcp_server: MCPServer, prompt: str, server_url: str):
+    agent = Agent(name="DiceDB MCP",
+                  instructions=f"""You can interact with a DiceDB database
+                                  running at {server_url}, use
+                                  this for url.""",
+                  mcp_servers=[mcp_server],)
+    result = await Runner.run(starting_agent=agent, input=prompt)
+    print(result.final_output)
+
+
+async def main():
+    openai.api_key = os.getenv("OPENAI_API_KEY")
+
+    prompt = "Can you change the value of the 'name' key to 'Rachel Green'?"
+    server_url = "localhost:7379"
+
+    async with MCPServerStdio(
+        cache_tools_list=True,
+        params={"command": "/Users/pottekkat/go/bin/dicedb-mcp", "args": [""]},
+    ) as server:
+        with trace(workflow_name="DiceDB MCP"):
+            await run(server, prompt, server_url)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
 ## Available Tools
 
 ### ping
