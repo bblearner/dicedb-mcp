@@ -35,6 +35,10 @@ func main() {
 	delTool := tools.NewDelTool()
 	s.AddTool(delTool, tools.HandleDelTool)
 
+	// Create and add the incr tool
+	incrTool := tools.NewIncrTool()
+	s.AddTool(incrTool, tools.HandleIncrTool)
+
 	// Start the server
 	if err := server.ServeStdio(s); err != nil {
 		fmt.Printf("Error starting server: %v\n", err)

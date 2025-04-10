@@ -13,6 +13,7 @@ Check out the [demo video](./demo.mov) to see it in action!
 - GET a value from DiceDB by key.
 - SET a key-value pair in DiceDB.
 - DEL one or more keys from DiceDB.
+- INCR the integer value of a key by one.
 
 ## Installation
 
@@ -67,6 +68,10 @@ Sets a key-value pair in DiceDB.
 ### del
 
 Deletes one or more keys from DiceDB.
+
+### incr
+
+Increments the integer value of a key by one.
 
 ## Development
 
