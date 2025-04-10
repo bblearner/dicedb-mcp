@@ -24,7 +24,7 @@ func NewDelTool() mcp.Tool {
 
 // HandleDelTool handles the DEL tool request
 func HandleDelTool(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	keys, ok := request.Params.Arguments["keys"].([]interface{})
+	keys, ok := request.Params.Arguments["keys"].([]any)
 	if !ok || len(keys) == 0 {
 		return nil, fmt.Errorf("missing or empty keys parameter")
 	}
