@@ -16,6 +16,7 @@ func NewDelTool() mcp.Tool {
 		mcp.WithDescription("Delete one or more keys from DiceDB"),
 		utils.CommonURLParam(),
 		mcp.WithArray("keys",
+			mcp.Items(map[string]any{"type": "string"}),
 			mcp.Required(),
 			mcp.Description("The keys to delete from DiceDB"),
 		),
