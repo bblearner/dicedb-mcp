@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/dicedb/dicedb-go"
 	"github.com/dicedb/dicedb-go/wire"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/pottekkat/dicedb-mcp/pkg/utils"
@@ -14,10 +13,7 @@ import (
 func NewEchoTool() mcp.Tool {
 	return mcp.NewTool("echo",
 		mcp.WithDescription("Echo a message through the DiceDB server"),
-		mcp.WithString("url",
-			mcp.Description("The URL of the DiceDB server in format 'host:port'"),
-			mcp.DefaultString("localhost:7379"),
-		),
+		utils.CommonURLParam(),
 		mcp.WithString("message",
 			mcp.Required(),
 			mcp.Description("The message to echo"),
@@ -32,18 +28,9 @@ func HandleEchoTool(ctx context.Context, request mcp.CallToolRequest) (*mcp.Call
 		return nil, fmt.Errorf("missing or empty message parameter")
 	}
 
-	var url string = "localhost:7379"
-	if urlArg, ok := request.Params.Arguments["url"]; ok && urlArg != nil {
-		if urlStr, ok := urlArg.(string); ok && urlStr != "" {
-			url = urlStr
-		}
-	}
-
-	host, port := utils.ParseHostAndPort(url)
-
-	client, err := dicedb.NewClient(host, port)
+	client, err := utils.GetClientFromRequest(request)
 	if err != nil {
-		return nil, fmt.Errorf("error connecting to DiceDB: %w", err)
+		return nil, err
 	}
 
 	resp := client.Fire(&wire.Command{

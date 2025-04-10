@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/dicedb/dicedb-go"
 	"github.com/dicedb/dicedb-go/wire"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/pottekkat/dicedb-mcp/pkg/utils"
@@ -15,10 +14,7 @@ import (
 func NewSetTool() mcp.Tool {
 	return mcp.NewTool("set",
 		mcp.WithDescription("Set a key-value pair in DiceDB"),
-		mcp.WithString("url",
-			mcp.Description("The URL of the DiceDB server in format 'host:port'"),
-			mcp.DefaultString("localhost:7379"),
-		),
+		utils.CommonURLParam(),
 		mcp.WithString("key",
 			mcp.Required(),
 			mcp.Description("The key to set"),
@@ -66,13 +62,6 @@ func HandleSetTool(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallT
 		return nil, fmt.Errorf("missing value parameter")
 	}
 
-	var url string = "localhost:7379"
-	if urlArg, ok := request.Params.Arguments["url"]; ok && urlArg != nil {
-		if urlStr, ok := urlArg.(string); ok && urlStr != "" {
-			url = urlStr
-		}
-	}
-
 	args := []string{key, value}
 
 	if ex, ok := request.Params.Arguments["ex"].(float64); ok {
@@ -107,10 +96,10 @@ func HandleSetTool(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallT
 		args = append(args, "GET")
 	}
 
-	host, port := utils.ParseHostAndPort(url)
-	client, err := dicedb.NewClient(host, port)
+	client, err := utils.GetClientFromRequest(request)
+
 	if err != nil {
-		return nil, fmt.Errorf("error connecting to DiceDB: %w", err)
+		return nil, err
 	}
 
 	resp := client.Fire(&wire.Command{

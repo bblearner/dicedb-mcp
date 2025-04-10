@@ -10,8 +10,8 @@ import (
 	"google.golang.org/protobuf/types/known/structpb"
 )
 
-// ParseHostAndPort splits a URL string in format "host:port" and returns the host and port
-func ParseHostAndPort(url string) (string, int) {
+// parseHostAndPort splits a URL string in format "host:port" and returns the host and port
+func parseHostAndPort(url string) (string, int) {
 	// If the URL is not in the "host:port" format, treat
 	// the URL as the host and use the default port 7379
 	host := url

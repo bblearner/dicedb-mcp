@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/dicedb/dicedb-go"
 	"github.com/dicedb/dicedb-go/wire"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/pottekkat/dicedb-mcp/pkg/utils"
@@ -14,10 +13,7 @@ import (
 func NewGetTool() mcp.Tool {
 	return mcp.NewTool("get",
 		mcp.WithDescription("Get a value from DiceDB by key"),
-		mcp.WithString("url",
-			mcp.Description("The URL of the DiceDB server in format 'host:port'"),
-			mcp.DefaultString("localhost:7379"),
-		),
+		utils.CommonURLParam(),
 		mcp.WithString("key",
 			mcp.Required(),
 			mcp.Description("The key to retrieve from DiceDB"),
@@ -32,18 +28,9 @@ func HandleGetTool(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallT
 		return nil, fmt.Errorf("missing or empty key parameter")
 	}
 
-	var url string = "localhost:7379"
-	if urlArg, ok := request.Params.Arguments["url"]; ok && urlArg != nil {
-		if urlStr, ok := urlArg.(string); ok && urlStr != "" {
-			url = urlStr
-		}
-	}
-
-	host, port := utils.ParseHostAndPort(url)
-
-	client, err := dicedb.NewClient(host, port)
+	client, err := utils.GetClientFromRequest(request)
 	if err != nil {
-		return nil, fmt.Errorf("error connecting to DiceDB: %w", err)
+		return nil, err
 	}
 
 	resp := client.Fire(&wire.Command{

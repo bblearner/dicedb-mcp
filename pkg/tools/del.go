@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/dicedb/dicedb-go"
 	"github.com/dicedb/dicedb-go/wire"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/pottekkat/dicedb-mcp/pkg/utils"
@@ -15,10 +14,7 @@ import (
 func NewDelTool() mcp.Tool {
 	return mcp.NewTool("del",
 		mcp.WithDescription("Delete one or more keys from DiceDB"),
-		mcp.WithString("url",
-			mcp.Description("The URL of the DiceDB server in format 'host:port'"),
-			mcp.DefaultString("localhost:7379"),
-		),
+		utils.CommonURLParam(),
 		mcp.WithArray("keys",
 			mcp.Required(),
 			mcp.Description("The keys to delete from DiceDB"),
@@ -33,24 +29,15 @@ func HandleDelTool(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallT
 		return nil, fmt.Errorf("missing or empty keys parameter")
 	}
 
-	var url string = "localhost:7379"
-	if urlArg, ok := request.Params.Arguments["url"]; ok && urlArg != nil {
-		if urlStr, ok := urlArg.(string); ok && urlStr != "" {
-			url = urlStr
-		}
-	}
-
-	host, port := utils.ParseHostAndPort(url)
-
-	client, err := dicedb.NewClient(host, port)
-	if err != nil {
-		return nil, fmt.Errorf("error connecting to DiceDB: %w", err)
-	}
-
 	// Convert the keys to strings
 	stringKeys := make([]string, len(keys))
 	for i, key := range keys {
 		stringKeys[i] = fmt.Sprintf("%v", key)
+	}
+
+	client, err := utils.GetClientFromRequest(request)
+	if err != nil {
+		return nil, err
 	}
 
 	resp := client.Fire(&wire.Command{
