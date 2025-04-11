@@ -13,7 +13,6 @@ func main() {
 		"DiceDB MCP",
 		"0.1.0",
 		server.WithToolCapabilities(false),
-		server.WithLogging(),
 	)
 
 	// Create and add the ping tool
