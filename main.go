@@ -12,7 +12,7 @@ func main() {
 	s := server.NewMCPServer(
 		"DiceDB MCP",
 		"0.1.0",
-		server.WithResourceCapabilities(true, true),
+		server.WithToolCapabilities(true),
 		server.WithLogging(),
 	)
 
@@ -38,10 +38,6 @@ func main() {
 	// Create and add the incr tool
 	incrTool := tools.NewIncrTool()
 	s.AddTool(incrTool, tools.HandleIncrTool)
-
-	// Create and add the decr tool
-	decrTool := tools.NewDecrTool()
-	s.AddTool(decrTool, tools.HandleDecrTool)
 
 	// Start the server
 	if err := server.ServeStdio(s); err != nil {
