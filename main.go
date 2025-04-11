@@ -12,7 +12,7 @@ func main() {
 	s := server.NewMCPServer(
 		"DiceDB MCP",
 		"0.1.0",
-		server.WithToolCapabilities(true),
+		server.WithToolCapabilities(false),
 		server.WithLogging(),
 	)
 
