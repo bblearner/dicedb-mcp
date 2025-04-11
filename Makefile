@@ -11,7 +11,7 @@ build:
 
 # Install the application
 install:
-	go install 
+	go install
 
 # Clean build artifacts
 clean:
