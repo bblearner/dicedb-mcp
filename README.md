@@ -14,6 +14,7 @@ Check out the [demo video](./demo.mov) to see it in action!
 - SET a key-value pair in DiceDB.
 - DEL one or more keys from DiceDB.
 - INCR the integer value of a key by one.
+- DECR the integer value of a key by one.
 
 ## Installation
 
@@ -115,6 +116,10 @@ Deletes one or more keys from DiceDB.
 ### incr
 
 Increments the integer value of a key by one.
+
+### decr
+
+Decrements the integer value of a key by one.
 
 ## Development
 
