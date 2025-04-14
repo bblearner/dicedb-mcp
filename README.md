@@ -81,7 +81,7 @@ async def main():
 
     async with MCPServerStdio(
         cache_tools_list=True,
-        params={"command": "/Users/pottekkat/go/bin/dicedb-mcp", "args": [""]},
+        params={"command": "path/to/dicedb-mcp", "args": [""]},
     ) as server:
         with trace(workflow_name="DiceDB MCP"):
             await run(server, prompt, server_url)
