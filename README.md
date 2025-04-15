@@ -18,6 +18,12 @@ Check out the [demo video](./demo.mov) to see it in action!
 
 ## Installation
 
+### Download Binary
+
+You can [download](https://github.com/pottekkat/dicedb-mcp/releases) and use the appropriate binary for your operating system and processor archetecture from the "Releases" page.
+
+### Install via Go
+
 Prerequisites:
 
 - Go 1.24 or higher
@@ -31,6 +37,10 @@ Get the path to the `dicedb-mcp` binary:
 ```bash
 which dicedb-mcp
 ```
+
+### Build from Source
+
+See [Development](#development) section below.
 
 ## Usage
 
