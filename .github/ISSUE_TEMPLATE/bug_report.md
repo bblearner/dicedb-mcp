@@ -1,8 +1,8 @@
 ---
 name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
+about: Create a bug report to help us improve
+title: 'bug: '
+labels: 'bug'
 assignees: ''
 
 ---
@@ -10,29 +10,19 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**Prompt**
+The exact prompt used when the error occurred.
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Server logs or error messages**
+If applicable, add the server logs or error messages to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**Environment**
+ - OS: [e.g. macOS arm]
+ - dicedb-mcp version: [e.g. 0.1.0]
+ - DiceDB version [e.g. v1.0.0]
 
 **Additional context**
 Add any other context about the problem here.
