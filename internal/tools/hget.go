@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"projects/dicedb-mcp/internal/utils"
+	"github.com/pottekkat/dicedb-mcp/pkg/utils"
 
 	"github.com/dicedb/dicedb-go/wire"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -51,7 +51,7 @@ func HandleHGetTool(ctx context.Context, request mcp.CallToolRequest) (*mcp.Call
 
 	value := utils.FormatDiceDBResponse(resp)
 
-	if value == "" {
+	if value == "(nil)" {
 		return mcp.NewToolResultText(fmt.Sprintf("Key '%s' not found or Field '%s' not found", key, field)), nil
 	}
 
