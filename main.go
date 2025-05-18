@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/mark3labs/mcp-go/server"
-	"github.com/pottekkat/dicedb-mcp/pkg/tools"
+	"github.com/pottekkat/dicedb-mcp/internal/tools"
 )
 
 func main() {
