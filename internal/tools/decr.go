@@ -6,7 +6,7 @@ import (
 
 	"github.com/dicedb/dicedb-go/wire"
 	"github.com/mark3labs/mcp-go/mcp"
-	"github.com/pottekkat/dicedb-mcp/pkg/utils"
+	"github.com/pottekkat/dicedb-mcp/internal/utils"
 )
 
 // NewDecrTool creates a new DECR tool for DiceDB
